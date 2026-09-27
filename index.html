@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迪乐盒子 - 好听的歌，都在这</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0F0F14;
+    --bg-card: #1A1A24;
+    --bg-card-hover: #22222F;
+    --accent: #6C5CE7;
+    --accent-light: #A29BFE;
+    --accent-gradient: linear-gradient(135deg, #6C5CE7 0%, #8B7CF6 50%, #A29BFE 100%);
+    --text: #FFFFFF;
+    --text-secondary: #9999AA;
+    --text-muted: #666677;
+    --border: #2A2A3A;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== 导航 ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 16px 0;
+    background: rgba(15, 15, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ===== Hero ===== */
+  .hero {
+    padding: 140px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 .highlight {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(108, 92, 231, 0.4);
+  }
+
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+  }
+
+  /* 手机展示 */
+  .phone-mockup {
+    position: relative;
+    width: 280px;
+    margin: 0 auto;
+  }
+
+  .phone-frame {
+    width: 100%;
+    border-radius: 40px;
+    border: 8px solid #222;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(108, 92, 231, 0.2);
+  }
+
+  .phone-frame img {
+    width: 100%;
+    display: block;
+  }
+
+  .phone-float {
+    position: absolute;
+    width: 200px;
+    border-radius: 24px;
+    border: 6px solid #222;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .phone-float.left {
+    left: -120px;
+    top: 60px;
+    transform: rotate(-8deg);
+  }
+
+  .phone-float img {
+    width: 100%;
+    display: block;
+  }
+
+  /* ===== 功能区 ===== */
+  .features {
+    padding: 100px 0;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .section-title h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .section-title p {
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: all 0.3s;
+  }
+
+  .feature-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(108, 92, 231, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== 截图展示 ===== */
+  .showcase {
+    padding: 100px 0;
+    background: var(--bg-card);
+  }
+
+  .showcase-grid {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 48px;
+  }
+
+  .showcase-phone {
+    width: 200px;
+    border-radius: 28px;
+    border: 5px solid #222;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.2);
+    transition: transform 0.3s;
+  }
+
+  .showcase-phone:hover {
+    transform: translateY(-8px);
+  }
+
+  .showcase-phone img {
+    width: 100%;
+    display: block;
+  }
+
+  /* ===== 价格 ===== */
+  .pricing {
+    padding: 100px 0;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .price-card:hover {
+    border-color: var(--accent);
+  }
+
+  .price-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(108, 92, 231, 0.1) 0%, var(--bg-card) 100%);
+  }
+
+  .badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--accent-gradient);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .price-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .price-card .desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .price {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .price span {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .price-features {
+    list-style: none;
+    margin: 24px 0 32px;
+  }
+
+  .price-features li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .price-features li::before {
+    content: '✓';
+    color: var(--accent-light);
+    font-weight: bold;
+  }
+
+  /* ===== 下载区 ===== */
+  .download-section {
+    padding: 100px 0;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(108, 92, 231, 0.1) 100%);
+  }
+
+  .download-section h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .download-section p {
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+  }
+
+  /* ===== 底部 ===== */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .hero h1 { font-size: 36px; }
+
+    .btn-group { justify-content: center; }
+
+    .phone-mockup { margin-top: 40px; }
+    .phone-float { display: none; }
+
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links a:not(:last-child) { display: none; }
+  }
+
+  @media (max-width: 500px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav>
+  <div class="container nav-inner">
+    <div class="logo">迪乐盒子</div>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#pricing">VIP</a>
+      <a href="#download" class="btn btn-primary" style="padding: 8px 20px; font-size: 14px;">下载APP</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>好听的歌<br><span class="highlight">都在这</span></h1>
+      <p>聚合多平台音乐资源，一键搜索播放下载。热歌榜、飙升榜每日更新，还有 AI 帮你解读每首歌背后的故事。</p>
+      <div class="btn-group">
+        <a href="#download" class="btn btn-primary">立即下载</a>
+        <a href="#features" class="btn btn-secondary">了解更多</a>
+      </div>
+    </div>
+    <div class="phone-mockup">
+      <div class="phone-frame">
+        <img src="https://aka.doubaocdn.com/s/kOeJDA8ZhN" alt="迪乐盒子首页">
+      </div>
+      <div class="phone-float left">
+        <img src="https://aka.doubaocdn.com/s/VgffV7WX9q" alt="播放页面">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 功能 -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-title">
+      <h2>为什么选择迪乐盒子</h2>
+      <p>干净、简洁、好用的音乐播放体验</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>全网搜索</h3>
+        <p>聚合多个音乐平台资源，搜你想听的，一键播放</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>热门榜单</h3>
+        <p>热歌榜、飙升榜、华语榜每日更新，好歌不错过</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI 解读</h3>
+        <p>每首歌都有 AI 帮你解读歌词含义和创作背景</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⬇️</div>
+        <h3>离线下载</h3>
+        <p>喜欢的歌下载到本地，没网也能听</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 截图展示 -->
+<section class="showcase">
+  <div class="container">
+    <div class="section-title">
+      <h2>简洁好用的界面</h2>
+      <p>打开就能用，没有多余的功能</p>
+    </div>
+    <div class="showcase-grid">
+      <div class="showcase-phone">
+        <img src="https://aka.doubaocdn.com/s/kOeJDA8ZhN" alt="首页">
+      </div>
+      <div class="showcase-phone">
+        <img src="https://aka.doubaocdn.com/s/KYGeAjB0X0" alt="AI智能推荐">
+      </div>
+      <div class="showcase-phone">
+        <img src="https://aka.doubaocdn.com/s/Z6S6Okjr92" alt="全网搜索">
+      </div>
+      <div class="showcase-phone">
+        <img src="https://aka.doubaocdn.com/s/VgffV7WX9q" alt="播放页面">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 价格 -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-title">
+      <h2>VIP 会员</h2>
+      <p>解锁全部权益，畅享无广告体验</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>VIP 月卡</h3>
+        <p class="desc">基础会员权益</p>
+        <div class="price">¥15<span> /月</span></div>
+        <ul class="price-features">
+          <li>无广告播放</li>
+          <li>高清音质</li>
+          <li>无限下载</li>
+          <li>歌曲收藏</li>
+        </ul>
+        <a href="#download" class="btn btn-secondary" style="width:100%; justify-content:center;">开通VIP</a>
+      </div>
+      <div class="price-card featured">
+        <div class="badge">推荐</div>
+        <h3>SVIP 年卡</h3>
+        <p class="desc">全部权益，超值划算</p>
+        <div class="price">¥168<span> /年</span></div>
+        <ul class="price-features">
+          <li>VIP 全部权益</li>
+          <li>无损音质</li>
+          <li>AI 歌曲解读</li>
+          <li>专属客服</li>
+          <li>抢先体验新功能</li>
+        </ul>
+        <a href="#download" class="btn btn-primary" style="width:100%; justify-content:center;">开通SVIP</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 下载 -->
+<section class="download-section" id="download">
+  <div class="container">
+    <h2>现在就开始听歌</h2>
+    <p>下载迪乐盒子，发现更多好音乐</p>
+    <div class="btn-group" style="justify-content: center;">
+      <a href="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/90faeee3f8c449e884c01933207d1377.apk?lk3s=8e244e95&rcl=202609261132536A5E3ED4E8E75BA3C29B&rrcfp=f512b60b&x-expires=1791689682&x-signature=HZnoLgIlmomF0JX3%2FIU897iaZZ0%3D&use_xbridge3=true&loader_name=forest&need_sec_link=1&sec_link_scene=im&theme=light" class="btn btn-primary" download>Android 下载</a>
+      <a href="#" class="btn btn-secondary" onclick="alert('iOS 版即将上线'); return false;">iOS 即将上线</a>
+    </div>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer>
+  <div class="container">
+    <p>© 2026 迪乐盒子 · 好听的歌都在这</p>
+  </div>
+</footer>
+
+</body>
+</html>
